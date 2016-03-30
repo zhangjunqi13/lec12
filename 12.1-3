@@ -1,1 +1,17 @@
+proc_struct；
+enum proc_state state; // 进程状态 
+int pid; // 进程ID 
+int runs; // 进程运行时间 
+uintptr_t kstack; // 进程内核栈 
+volatile bool need_resched; // 是否需要被调度或释放ＣＰＵ 
+struct proc_struct *parent; // 父进程 
+struct mm_struct *mm; // 进程的内存管理结构 
+struct context context; // 上下文 
+struct trapframe *tf; // 
+Trap frame for current interrupt uintptr_t cr3; // ＣＲ３寄存器值，存储页目录表基址 
+uint32_t flags; // 进程标识 
+char name[PROC_NAME_LEN + 1]; // 进程名字
 
+proc.c下的函数基本上都用到了它，比如proc_run,proc_init,find_proc等函数。 
+setup_kstack,copy_thread,do_fork需要修改它。 
+因为为了创建进程，切换进程，退出进程时需要修改链表结构和链表内的内容 。
